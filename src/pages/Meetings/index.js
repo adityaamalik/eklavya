@@ -5,7 +5,7 @@ import SideMenu from "../../components/SideMenu";
 
 const { Content } = Layout;
 
-const StudentStatistics = () => {
+const Meetings = () => {
     return (
         <>
             <Layout>
@@ -14,10 +14,11 @@ const StudentStatistics = () => {
                     <Content
                         style={{
                             height: "100vh",
-                            marginLeft: "250px",
+                            marginLeft: "200px",
+                            padding: "50px",
                         }}
                     >
-                        <S.Heading>Your Attendance Statistics</S.Heading>
+                        <S.Heading>Scheduled Meetings</S.Heading>
                     </Content>
                 </Layout>
             </Layout>
@@ -25,4 +26,4 @@ const StudentStatistics = () => {
     );
 };
 
-export default StudentStatistics;
+export default Meetings;

@@ -4,11 +4,10 @@ import * as S from "./styles";
 import { Link } from "react-router-dom";
 import {
     HomeOutlined,
-    BookOutlined,
     MailOutlined,
-    LogoutOutlined,
-    LineChartOutlined,
-    PlusOutlined,
+    SearchOutlined,
+    UserOutlined,
+    TeamOutlined,
 } from "@ant-design/icons";
 
 const { Sider } = Layout;
@@ -22,9 +21,7 @@ const SideMenu = (props) => {
                 position: "fixed",
             }}
         >
-            <Link
-                to={props.isTeacher ? "teacherdashboard" : "studentdashboard"}
-            >
+            <Link to={props.isMentor ? "mentordashboard" : "menteedashboard"}>
                 <S.SideMenu>
                     <HomeOutlined
                         style={{ color: "white", fontSize: "40px" }}
@@ -32,67 +29,44 @@ const SideMenu = (props) => {
                     <h1 style={{ color: "white", fontSize: "25px" }}>Home</h1>
                 </S.SideMenu>
             </Link>
-            <Link to={props.isTeacher ? "teacherclasses" : "studentclasses"}>
+            <Link to={props.isMentor ? "queries" : "queries"}>
                 <S.SideMenu>
-                    <BookOutlined
+                    <SearchOutlined
                         style={{ color: "white", fontSize: "40px" }}
                     />
                     <h1 style={{ color: "white", fontSize: "25px" }}>
-                        Classes
+                        Queries
                     </h1>
                 </S.SideMenu>
             </Link>
             <Link
-                to={
-                    props.isTeacher
-                        ? "teachercreateclass"
-                        : "studentinvitations"
-                }
+                to={props.isMentor ? "mentorinvitations" : "menteeinvitations"}
             >
                 <S.SideMenu>
-                    {props.isTeacher ? (
-                        <>
-                            <PlusOutlined
-                                style={{ color: "white", fontSize: "40px" }}
-                            />
-                            <h1 style={{ color: "white", fontSize: "25px" }}>
-                                New Class
-                            </h1>
-                        </>
-                    ) : (
-                        <>
-                            <MailOutlined
-                                style={{ color: "white", fontSize: "40px" }}
-                            />
-                            <h1 style={{ color: "white", fontSize: "25px" }}>
-                                Invitations
-                            </h1>
-                        </>
-                    )}
+                    <>
+                        <MailOutlined
+                            style={{ color: "white", fontSize: "40px" }}
+                        />
+                        <h1 style={{ color: "white", fontSize: "25px" }}>
+                            Invitations
+                        </h1>
+                    </>
                 </S.SideMenu>
             </Link>
-            <Link
-                to={props.isTeacher ? "teacherstatistics" : "studentstatistics"}
-            >
+            <Link to={props.isMentor ? "mentormeetings" : "menteemeetings"}>
                 <S.SideMenu>
-                    <LineChartOutlined
+                    <TeamOutlined
                         style={{ color: "white", fontSize: "40px" }}
                     />
                     <h1 style={{ color: "white", fontSize: "25px" }}>
-                        Statistics
+                        Meetings
                     </h1>
                 </S.SideMenu>
             </Link>
 
-            <S.SideMenu
-                onClick={() => {
-                    window.location.href = "/";
-                    localStorage.clear();
-                }}
-                style={{ cursor: "pointer" }}
-            >
-                <LogoutOutlined style={{ color: "white", fontSize: "40px" }} />
-                <h1 style={{ color: "white", fontSize: "25px" }}>Logout</h1>
+            <S.SideMenu style={{ cursor: "pointer" }}>
+                <UserOutlined style={{ color: "white", fontSize: "40px" }} />
+                <h1 style={{ color: "white", fontSize: "25px" }}>Profile</h1>
             </S.SideMenu>
         </Sider>
     );

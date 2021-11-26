@@ -9,7 +9,7 @@ const MentorDashboard = () => {
     return (
         <>
             <Layout>
-                <SideMenu isTeacher={true} />
+                <SideMenu isMentor={true} />
                 <Layout>
                     <Content
                         style={{

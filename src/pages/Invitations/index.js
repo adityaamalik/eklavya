@@ -5,7 +5,7 @@ import SideMenu from "../../components/SideMenu";
 
 const { Content } = Layout;
 
-const StudentInvitations = () => {
+const Invitations = () => {
     const [invitations] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     return (
@@ -16,16 +16,17 @@ const StudentInvitations = () => {
                     <Content
                         style={{
                             height: "100vh",
-                            marginLeft: "250px",
+                            marginLeft: "200px",
+                            padding: "50px",
                         }}
                     >
-                        <S.Heading>Class Invitations</S.Heading>
+                        <S.Heading>Sent Invites</S.Heading>
                         <Row>
                             {invitations.map((invite) => (
                                 <Col lg={8} md={12} sm={12} key={invite}>
                                     <Card
                                         hoverable
-                                        title="Class name"
+                                        title="Invite"
                                         style={{
                                             width: 300,
                                             marginTop: "10px",
@@ -36,13 +37,28 @@ const StudentInvitations = () => {
                                                 span={12}
                                                 style={{ color: "gray" }}
                                             >
-                                                Taught By
+                                                Invite By
                                             </Col>
                                             <Col
                                                 span={12}
                                                 style={{ textAlign: "right" }}
                                             >
-                                                Mr. Ajay Kumar
+                                                Mentee Name
+                                            </Col>
+                                        </Row>
+
+                                        <Row>
+                                            <Col
+                                                span={12}
+                                                style={{ color: "gray" }}
+                                            >
+                                                Invite To
+                                            </Col>
+                                            <Col
+                                                span={12}
+                                                style={{ textAlign: "right" }}
+                                            >
+                                                Mentor Name
                                             </Col>
                                         </Row>
 
@@ -58,21 +74,6 @@ const StudentInvitations = () => {
                                                 style={{ textAlign: "right" }}
                                             >
                                                 25/07/2021
-                                            </Col>
-                                        </Row>
-
-                                        <Row style={{ marginTop: "10px" }}>
-                                            <Col
-                                                span={20}
-                                                style={{ color: "gray" }}
-                                            >
-                                                Total lectures till now
-                                            </Col>
-                                            <Col
-                                                span={4}
-                                                style={{ textAlign: "right" }}
-                                            >
-                                                50
                                             </Col>
                                         </Row>
 
@@ -100,4 +101,4 @@ const StudentInvitations = () => {
     );
 };
 
-export default StudentInvitations;
+export default Invitations;

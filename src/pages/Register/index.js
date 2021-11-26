@@ -3,11 +3,6 @@ import * as S from "./styles";
 import { Button, message, Card, Col, Row } from "antd";
 import { Link } from "react-router-dom";
 
-const gridStyle = {
-    width: "25%",
-    textAlign: "center",
-};
-
 const Register = (props) => {
     useEffect(() => {
         if (
@@ -23,6 +18,8 @@ const Register = (props) => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [name, setName] = useState("");
     const [profileUrl, setProfileUrl] = useState("");
+    const [categories, setCategories] = useState([]);
+    const [categoryID, setCategoryID] = useState("asd");
 
     const register = () => {
         if (name === "") {
@@ -37,6 +34,11 @@ const Register = (props) => {
             message.error("Please confirm password !");
         } else if (password !== confirmPassword) {
             message.error("Passwords not matching !");
+        } else if (
+            props?.location?.state?.role === "mentor" &&
+            categoryID === ""
+        ) {
+            message.error("Please select a category !");
         } else {
             const role = props?.location?.state?.role?.toLowerCase();
 
@@ -95,28 +97,87 @@ const Register = (props) => {
                 <br />
                 <br />
 
-                <Row>
-                    <Col md={4}></Col>
-                    <Col md={16}>
-                        <Card title="Select among following categories">
-                            <Card.Grid style={gridStyle}>
-                                <img src="assets/imgs/temp.jpeg" height={50} />{" "}
-                                Content
-                            </Card.Grid>
-                            <Card.Grid style={gridStyle}>Content</Card.Grid>
-                            <Card.Grid style={gridStyle}>Content</Card.Grid>
-                            <Card.Grid style={gridStyle}>Content</Card.Grid>
-                            <Card.Grid style={gridStyle}>Content</Card.Grid>
-                            <Card.Grid style={gridStyle}>Content</Card.Grid>
-                            <Card.Grid style={gridStyle}>Content</Card.Grid>
-                            <Card.Grid style={gridStyle}>Content</Card.Grid>
-                        </Card>
-                    </Col>
-                    <Col md={4}></Col>
-                </Row>
+                {props?.location?.state?.role === "mentor" && (
+                    <>
+                        <Row>
+                            <Col md={4}></Col>
+                            <Col md={16}>
+                                <Card title="Select among following categories">
+                                    <Card.Grid
+                                        style={{
+                                            width: "32%",
+                                            margin: "5px",
+                                            textAlign: "center",
+                                            color: "blue",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Category 1
+                                    </Card.Grid>
+                                    <Card.Grid
+                                        style={{
+                                            width: "32%",
+                                            textAlign: "center",
+                                            margin: "5px",
+                                            color: "black",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Content
+                                    </Card.Grid>
+                                    <Card.Grid
+                                        style={{
+                                            width: "32%",
+                                            textAlign: "center",
+                                            margin: "5px",
+                                            color: "black",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Content
+                                    </Card.Grid>
+                                    <Card.Grid
+                                        style={{
+                                            width: "32%",
+                                            textAlign: "center",
+                                            margin: "5px",
+                                            color: "black",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Content
+                                    </Card.Grid>
+                                    <Card.Grid
+                                        style={{
+                                            width: "32%",
+                                            textAlign: "center",
+                                            margin: "5px",
+                                            color: "black",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Content
+                                    </Card.Grid>
+                                    <Card.Grid
+                                        style={{
+                                            width: "32%",
+                                            textAlign: "center",
+                                            margin: "5px",
+                                            color: "black",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Content
+                                    </Card.Grid>
+                                </Card>
+                            </Col>
+                            <Col md={4}></Col>
+                        </Row>
 
-                <br />
-                <br />
+                        <br />
+                        <br />
+                    </>
+                )}
 
                 <Button
                     disabled={

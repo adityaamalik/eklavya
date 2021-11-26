@@ -9,12 +9,12 @@ const TeacherStatistics = () => {
     return (
         <>
             <Layout>
-                <SideMenu isTeacher={true} />
+                <SideMenu isMentor={true} />
                 <Layout style={{ backgroundColor: "white" }}>
                     <Content
                         style={{
                             height: "100vh",
-                            marginLeft: "250px",
+                            marginLeft: "200px",
                         }}
                     >
                         <S.Heading>Your Attendance Statistics</S.Heading>

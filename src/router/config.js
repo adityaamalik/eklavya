@@ -25,34 +25,39 @@ const routes = [
         component: "MenteeDashboard",
     },
     {
-        path: ["/menteeclasses"],
+        path: ["/queries"],
         exact: true,
-        component: "MenteeClasses",
+        component: "Queries",
     },
     {
         path: ["/menteeinvitations"],
         exact: true,
-        component: "MenteeInvitations",
+        component: "Invitations",
     },
     {
-        path: ["/menteestatistics"],
+        path: ["/mentorinvitations"],
         exact: true,
-        component: "MenteeStatistics",
+        component: "Invitations",
     },
     {
-        path: ["/mentorclasses"],
+        path: ["/menteemeetings"],
         exact: true,
-        component: "MentorClasses",
+        component: "Meetings",
     },
     {
-        path: ["/mentorcreateclass"],
+        path: ["/mentormeetings"],
         exact: true,
-        component: "MentorCreateClass",
+        component: "Meetings",
     },
     {
-        path: ["/mentorstatistics"],
+        path: ["/mentorprofile"],
         exact: true,
-        component: "MentorStatistics",
+        component: "MentorProfile",
+    },
+    {
+        path: ["/menteeprofile"],
+        exact: true,
+        component: "MenteeProfile",
     },
 ];
 
