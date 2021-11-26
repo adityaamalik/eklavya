@@ -43,7 +43,7 @@ const Register = (props) => {
       message.error("Please enter your name !");
     } else if (email === "") {
       message.error("Please enter email !");
-    } else if (props?.location?.state?.role === "mentor" && profileurl === "") {
+    } else if (props?.location?.state?.role == "mentor" && profileurl === "") {
       message.error("Please enter linkedIn Profile !");
     } else if (password === "") {
       message.error("Please enter password !");
@@ -66,8 +66,10 @@ const Register = (props) => {
         })
         .then((response) => {
           console.log(response.data);
+          if (role == "mentor")
+            localStorage.setItem("Mentor", response.data.mentor._id);
+          else localStorage.setItem("Mentor", response.data.mentee._id);
 
-          localStorage.setItem("Mentor", response.data.mentor._id);
           localStorage.setItem("token", response.data.token);
 
           props.history.push(`/${role}dashboard`);
