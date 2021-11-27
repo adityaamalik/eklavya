@@ -63,11 +63,16 @@ const SideMenu = (props) => {
                     </h1>
                 </S.SideMenu>
             </Link>
-
-            <S.SideMenu style={{ cursor: "pointer" }}>
-                <UserOutlined style={{ color: "white", fontSize: "40px" }} />
-                <h1 style={{ color: "white", fontSize: "25px" }}>Profile</h1>
-            </S.SideMenu>
+            <Link to={props.isMentor ? "mentorprofile" : "menteeprofile"}>
+                <S.SideMenu style={{ cursor: "pointer" }}>
+                    <UserOutlined
+                        style={{ color: "white", fontSize: "40px" }}
+                    />
+                    <h1 style={{ color: "white", fontSize: "25px" }}>
+                        Profile
+                    </h1>
+                </S.SideMenu>
+            </Link>
         </Sider>
     );
 };
