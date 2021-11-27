@@ -25,16 +25,14 @@ const Login = (props) => {
     } else {
       let role = props?.location?.state?.role?.toLowerCase();
 
-      props.history.push(`/${role}dashboard`);
-
       axios
         .post(`/${role}/login`, {
           email: email,
           password: password,
         })
         .then((response) => {
-          console.log(response);
-          console.log(role);
+          // console.log(response);
+          // console.log(role);
           if (role === "mentor")
             localStorage.setItem(`${role}`, response.data.mentor._id);
           else localStorage.setItem(`${role}`, response.data.mentee._id);
@@ -43,9 +41,9 @@ const Login = (props) => {
         })
         .catch((err) => {
           console.log(err);
-          if (err.response.data === "email incorrect") {
+          if (err.data === "email incorrect") {
             message.error("This email is not registered !");
-          } else if (err.response.data === "password incorrect") {
+          } else if (err.data === "password incorrect") {
             message.error("Password is wrong. Please try again !");
           } else {
             message.error("Some error occured !");
