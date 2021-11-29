@@ -24,7 +24,7 @@ const MenteeDashboard = () => {
       .catch((err) => {
         if (!!err.response && err.response.status === 401) {
           setTimeout(() => {
-            window.location.pathname = "/";
+            // window.location.pathname = "/";
           }, 1000);
         }
       });

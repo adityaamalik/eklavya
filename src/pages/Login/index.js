@@ -23,6 +23,8 @@ const Login = (props) => {
     } else if (password === "") {
       message.error("Please enter password !");
     } else {
+      console.log(password);
+      console.log(email);
       let role = props?.location?.state?.role?.toLowerCase();
 
       axios
@@ -31,8 +33,8 @@ const Login = (props) => {
           password: password,
         })
         .then((response) => {
-          // console.log(response);
-          // console.log(role);
+          console.log(response);
+          console.log(role);
           if (role === "mentor")
             localStorage.setItem(`${role}`, response.data.mentor._id);
           else localStorage.setItem(`${role}`, response.data.mentee._id);
