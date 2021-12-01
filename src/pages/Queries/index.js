@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
+
 import {
-  Input,
   Layout,
   Row,
   Col,
-  Button,
   Divider,
   Card,
   Avatar,
+  Button,
+  Modal,
+  message,
+  Input,
   Select,
 } from "antd";
 import axios from "axios";
@@ -25,8 +28,11 @@ const { Option } = Select;
 
 const Queries = () => {
   const handleCategoryFilter = (value) => {
-    console.log(value);
     setCategoryID(value);
+  };
+  const handleCategoryFilter2 = (value) => {
+    console.log(value);
+    setCategoryID2(value);
     axios
       .get(`/mentor/questionList/${value}`, {
         params: {
@@ -46,10 +52,25 @@ const Queries = () => {
       });
   };
 
+  const sendQuestion = () => {
+    axios
+      .post(`/mentee/question/${localStorage.getItem("mentee")}`, {
+        askedby: localStorage.getItem("mentee"),
+        question: question,
+        category: categoryID,
+      })
+      .then((res) => {
+        message.success("Question posted");
+      })
+      .catch((err) => {
+        message.error("Could not post Question");
+      });
+  };
+
   useEffect(() => {
     console.log(categoryID);
     axios
-      .get(`/mentor/category/6198e265da2c0d17668aec19`)
+      .get(`/mentor/category`)
       .then((response) => {
         setCategories(response.data);
         console.log(response.data);
@@ -64,7 +85,9 @@ const Queries = () => {
   }, []);
   const [categories, setCategories] = useState([]);
   const [questions, setQuestions] = useState([]);
-  const [categoryID, setCategoryID] = useState("asd");
+  const [categoryID, setCategoryID] = useState("");
+  const [categoryID2, setCategoryID2] = useState("");
+  const [question, setQuestion] = useState("");
 
   let categoryList = categories.map((category) => {
     return (
@@ -92,6 +115,10 @@ const Queries = () => {
         </Card.Grid>
       </div>
     );
+  });
+
+  let categoryDrop = categories.map((category) => {
+    return <Option value={category._id}>{category.name}</Option>;
   });
 
   let questionList = questions.map((question) => {
@@ -132,10 +159,20 @@ const Queries = () => {
             <S.Heading>What's troubling you ?</S.Heading>
             <Row>
               <Col span={22}>
-                <Input type="text" placeholder="Your question" />
+                <Input
+                  type="text"
+                  placeholder="Your Question"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                />
               </Col>
               <Col span={2}>
-                <Button disabled>POST</Button>
+                <Button
+                  disabled={question === "" || categoryID === ""}
+                  onClick={sendQuestion}
+                >
+                  POST
+                </Button>
               </Col>
             </Row>
             <br />
@@ -155,57 +192,13 @@ const Queries = () => {
                 <Select
                   placeholder="Filter by category"
                   style={{ width: 300 }}
-                  onChange={handleCategoryFilter}
+                  onChange={handleCategoryFilter2}
                 >
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                  <Option value="Yiminghe">yiminghe</Option>
+                  {categoryDrop}
                 </Select>
               </Col>
             </Row>
 
-            {/* <Card
-              style={{ marginTop: 16 }}
-              actions={[
-                <SettingOutlined key="setting" />,
-                <EditOutlined key="edit" />,
-                <EllipsisOutlined key="ellipsis" />,
-              ]}
-            >
-              <Meta
-                avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-                title="Question title"
-                description="Question description"
-              />
-            </Card>
-            <Card
-              style={{ marginTop: 16 }}
-              actions={[
-                <SettingOutlined key="setting" />,
-                <EditOutlined key="edit" />,
-                <EllipsisOutlined key="ellipsis" />,
-              ]}
-            >
-              <Meta
-                avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-                title="Question title"
-                description="Question description"
-              />
-            </Card>
-            <Card
-              style={{ marginTop: 16 }}
-              actions={[
-                <SettingOutlined key="setting" />,
-                <EditOutlined key="edit" />,
-                <EllipsisOutlined key="ellipsis" />,
-              ]}
-            >
-              <Meta
-                avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-                title="Question title"
-                description="Question description"
-              />
-            </Card> */}
             {questionList}
             <br />
             <br />
