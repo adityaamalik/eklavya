@@ -11,6 +11,7 @@ import {
   Modal,
   Select,
   Form,
+  message,
 } from "antd";
 import * as S from "./styles";
 import SideMenu from "../../components/SideMenu";
@@ -22,61 +23,53 @@ const { Option } = Select;
 const Profile = (props) => {
   const [createBadgeModal, toggleCreateBadgeModal] = useState(false);
 
+  const createBadge = () => {
+    const mentor = localStorage.getItem("mentor");
+    const data = new FormData();
+
+    if (nameBadge !== "") {
+      data.append("name", nameBadge);
+    }
+
+    if (description !== "") {
+      data.append("description", description);
+    }
+    if (menteeid !== "") {
+      data.append("mentee", menteeid);
+    }
+    if (value !== "") {
+      data.append("value", value);
+    }
+    if (!!image) {
+      data.append("image", image);
+    }
+
+    data.append("mentor", mentor);
+    axios
+      .post(`/mentor/badges/${mentor}`, data)
+      .then((response) => {
+        console.log(response.data);
+        message.success("Badge posted");
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Some error occured");
+      });
+  };
+
   const handleMenteeChoose = (value) => {
     console.log(value);
-  };
-
-  const onFinish = (values) => {
-    console.log("on finish called");
-    // const mentee = localStorage.getItem("docsrecordDoctor");
-    // values.doctor = doctor;
-    // axios
-    //   .put(`/patients/${id}`, values)
-    //   .then((response) => {
-    //     console.log(response);
-    //     setPatient(response.data);
-    //     message.success("Patient updated successfully !");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    setMenteeid(value);
   };
   useEffect(() => {
-    const mentee = localStorage.getItem("mentee");
-    axios
-      .get(`/mentee/badges/${mentee}`)
-      .then((response) => {
-        console.log(response.data);
-        setBadges(response.data);
-      })
-      .catch((err) => {
-        if (!!err.response && err.response.status === 401) {
-          setTimeout(() => {
-            window.location.pathname = "/";
-          }, 1000);
-        }
-      });
+    const mentor = localStorage.getItem("mentor");
 
     axios
-      .get(`/mentee/${mentee}`)
+      .get(`/mentor/mentee/${mentor}`)
       .then((response) => {
         console.log(response.data);
-        setmentee(response.data);
-        setMentors(response.data.mentors);
-      })
-      .catch((err) => {
-        if (!!err.response && err.response.status === 401) {
-          setTimeout(() => {
-            window.location.pathname = "/";
-          }, 1000);
-        }
-      });
-
-    axios
-      .get(`/mentor/category`)
-      .then((response) => {
-        setCategories(response.data);
-        console.log(response.data);
+        setMentor(response.data);
+        setMentees(response.data.mentees);
       })
       .catch((err) => {
         if (!!err.response && err.response.status === 401) {
@@ -86,91 +79,31 @@ const Profile = (props) => {
         }
       });
   }, []);
-  const [badges, setBadges] = useState([]);
-  const [mentors, setMentors] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [categoryID, setCategoryID] = useState();
-  const [mentee, setmentee] = useState("");
-  const [selectedMentor, setSelectedMentor] = useState({});
-  const [mentorModal, toggleMentorModal] = useState(false);
-  let categoryList = categories.map((category) => {
-    return (
-      // onClick={() => handleCategoryFilter(category._id)}
-      <div>
-        <Card.Grid
-          style={{
-            width: "32%",
-            margin: "5px",
-            textAlign: "center",
-            color: "blue",
-            cursor: "pointer",
-          }}
-          cover={
-            <img
-              alt="example"
-              src={`data:image/${
-                category.image.contentType
-              };base64,${new Buffer.from(category.image.data).toString(
-                "base64"
-              )}`}
-            />
-          }
-        >
-          {category.name}
-        </Card.Grid>
-      </div>
-    );
-  });
+  const [image, setImage] = useState({});
+  const [nameBadge, setName] = useState("");
+  const [value, setValue] = useState("");
+  const [description, setDescription] = useState("");
+  const [mentees, setMentees] = useState([]);
+  const [menteeid, setMenteeid] = useState([]);
+  const [mentor, setMentor] = useState("");
+  const [selectedMentee, setSelectedMentee] = useState({});
+  const [menteeModal, toggleMentorModal] = useState(false);
 
-  let BadgesList = badges.map((badge) => {
-    return (
-      <div>
-        <Col>
-          <Card
-            hoverable
-            cover={
-              <img
-                alt="example"
-                src={`data:image/${
-                  badge.image.contentType
-                };base64,${new Buffer.from(badge.image.data).toString(
-                  "base64"
-                )}`}
-              />
-            }
-          >
-            <strong>Date : </strong> {badge.date}
-            <br />
-            <strong>Name : </strong> {badge.name}
-            <br />
-            <strong>Value : </strong> {badge.value}
-            <br />
-            <strong>Mentor Name : </strong>
-            {/* {badge.mentor.name} */}
-            <br />
-            <strong>Mentee Name : </strong> {badge.mentee.name}
-            <br />
-            <strong>Description : </strong> {badge.description}
-          </Card>
-        </Col>
-      </div>
-    );
-  });
-  let mentorList = mentors.map((mentor, index) => {
+  let mentorList = mentees.map((mentor, index) => {
     return (
       <React.Fragment key={index}>
         <Col md={12} sm={24} xs={24}>
           <Card style={{ marginTop: 16 }}>
             <Meta
               avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-              title={mentor.mentor.name}
+              title={mentor.name}
             />
-            <p>{mentor.mentor.email}</p>
+            <p>{mentor.email}</p>
             <Row align="middle">
               <Col span={12}>
                 <Button
                   onClick={() => {
-                    setSelectedMentor(mentor);
+                    setSelectedMentee(mentor);
                     toggleMentorModal(true);
                   }}
                   size="small"
@@ -195,6 +128,10 @@ const Profile = (props) => {
     );
   });
 
+  let MenteeDrop = mentees.map((mentee) => {
+    return <Option value={mentee._id}>{mentee.name}</Option>;
+  });
+
   return (
     <>
       <Layout>
@@ -207,6 +144,59 @@ const Profile = (props) => {
               padding: "50px",
             }}
           >
+            <Modal
+              title="Create a new Badge"
+              centered
+              visible={createBadgeModal}
+              footer={null}
+              onOk={() => toggleCreateBadgeModal(false)}
+              onCancel={() => toggleCreateBadgeModal(false)}
+            >
+              <Input
+                type="text"
+                placeholder="Name of this badge"
+                value={nameBadge}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <br />
+              <br />
+              <Input
+                type="text"
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              <br />
+              <br />
+              <Input
+                type="number"
+                placeholder="Value"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+              <br />
+              <br />
+              <Select
+                placeholder="Select a mentor"
+                style={{ width: "100%" }}
+                onChange={handleMenteeChoose}
+              >
+                {MenteeDrop}
+              </Select>
+              <br />
+              <br />
+              <Row>
+                <Col span={12}>Badge Image :</Col>
+                <Col span={12}>
+                  <input
+                    type="file"
+                    onChange={(e) => setImage(e.target.files[0])}
+                  />
+                </Col>
+              </Row>
+              <br />
+              <Button onClick={createBadge}>Create Badge</Button>
+            </Modal>
             <S.Heading>Profile</S.Heading>
             <br />
             <br />
@@ -215,7 +205,7 @@ const Profile = (props) => {
                 <h3>Name :</h3>
               </Col>
               <Col span={12}>
-                <h3>{mentee.name}</h3>
+                <h3>{mentor.name}</h3>
               </Col>
             </Row>
             <br />
@@ -224,7 +214,7 @@ const Profile = (props) => {
                 <h3>Email :</h3>
               </Col>
               <Col span={12}>
-                <h3>{mentee.email}</h3>
+                <h3>{mentor.email}</h3>
               </Col>
             </Row>
             <br />
@@ -233,7 +223,7 @@ const Profile = (props) => {
                 <h3>LinkedIn Profile URL :</h3>
               </Col>
               <Col span={12}>
-                <h3>{mentee.profileurl}</h3>
+                <h3>{mentor.profileurl}</h3>
               </Col>
             </Row>
             <br />
@@ -242,7 +232,7 @@ const Profile = (props) => {
                 <h1>YOUR COIN BALANCE</h1>
               </Col>
               <Col span={12}>
-                {mentee.totalCoins && <h1>{mentee.totalCoins.current}</h1>}
+                {mentor.totalCoins && <h1>{mentor.totalCoins.current}</h1>}
               </Col>
             </Row>
             <br />
@@ -267,36 +257,36 @@ const Profile = (props) => {
             <Modal
               title="Mentor Details"
               centered
-              visible={mentorModal}
+              visible={menteeModal}
               footer={null}
               onOk={() => toggleMentorModal(false)}
               onCancel={() => toggleMentorModal(false)}
             >
-              {selectedMentor.mentor && (
+              {selectedMentee && (
                 <div>
                   <Row>
                     <Col span={12}>
                       <h4>Name : </h4>
                     </Col>
-                    <Col span={12}>{selectedMentor.mentor.name}</Col>
+                    <Col span={12}>{selectedMentee.name}</Col>
                   </Row>
                   <Row>
                     <Col span={12}>
                       <h4>Email : </h4>
                     </Col>
-                    <Col span={12}>{selectedMentor.mentor.email}</Col>
+                    <Col span={12}>{selectedMentee.email}</Col>
                   </Row>
                   <Row>
                     <Col span={12}>
                       <h4>Qualifications : </h4>
                     </Col>
-                    <Col span={12}>{selectedMentor.mentor.qualifications}</Col>
+                    <Col span={12}>{selectedMentee.qualifications}</Col>
                   </Row>
 
                   <Row>
                     <Col span={24}>
                       <a
-                        href={selectedMentor.profileurl}
+                        href={selectedMentee.profileurl}
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -309,6 +299,21 @@ const Profile = (props) => {
 
               <br />
             </Modal>
+            <Row align="middle">
+              <Col span={24}>
+                <h2>
+                  Badges
+                  {props?.location?.pathname === "/mentorprofile" && (
+                    <Button
+                      onClick={() => toggleCreateBadgeModal(true)}
+                      style={{ marginLeft: "20px" }}
+                    >
+                      + Create new badge
+                    </Button>
+                  )}
+                </h2>
+              </Col>
+            </Row>
             <Row>
               <Col span={24}>
                 <h2>
@@ -320,8 +325,7 @@ const Profile = (props) => {
                 {mentorList}
               </Col>
             </Row>
-            <h2>My Badges</h2>
-            <Row align="middle">{BadgesList}</Row>
+
             <br />
             <div style={{ textAlign: "center" }}>
               <Button

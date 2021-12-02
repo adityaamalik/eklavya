@@ -26,7 +26,7 @@ const { Meta } = Card;
 const { Content } = Layout;
 const { Option } = Select;
 
-const Queries = () => {
+const Queries = (props) => {
   const handleCategoryFilter = (value) => {
     setCategoryID(value);
   };
@@ -68,7 +68,6 @@ const Queries = () => {
   };
 
   useEffect(() => {
-    console.log(categoryID);
     axios
       .get(`/mentor/category`)
       .then((response) => {
@@ -146,7 +145,7 @@ const Queries = () => {
   return (
     <>
       <Layout>
-        <SideMenu />
+        <SideMenu isMentor={props?.location?.pathname === "/mentorqueries"} />
         <Layout>
           <Content
             style={{
