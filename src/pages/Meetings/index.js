@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Layout, Card, Row, Col, Button, Modal, Input, Select } from "antd";
+import {
+  Layout,
+  Card,
+  Row,
+  Col,
+  Button,
+  Modal,
+  Input,
+  Select,
+  message,
+} from "antd";
 import * as S from "./styles";
 import SideMenu from "../../components/SideMenu";
 
@@ -12,6 +22,19 @@ const Meetings = (props) => {
 
   useEffect(() => {
     const mentee = localStorage.getItem("mentee");
+    axios
+      .get(`/mentee/${mentee}`)
+      .then((response) => {
+        console.log(response.data.mentors);
+        setMentors(response.data.mentors);
+      })
+      .catch((err) => {
+        if (!!err.response && err.response.status === 401) {
+          setTimeout(() => {
+            window.location.pathname = "/";
+          }, 1000);
+        }
+      });
     axios
       .get(`/mentee/meeting/${mentee}`)
       .then((response) => {
@@ -27,9 +50,28 @@ const Meetings = (props) => {
       });
   }, []);
 
+  const createmeeting = () => {
+    axios
+      .post(`/mentee/meeting/${localStorage.getItem("mentee")}`, {
+        mentee: localStorage.getItem("mentee"),
+        message: messages,
+        mentor: mentorID,
+        url: url,
+      })
+      .then((res) => {
+        message.success("Meeting posted");
+      })
+      .catch((err) => {
+        message.error("Could not post Meeting");
+      });
+  };
   const [meetings, setMeetings] = useState([]);
+  const [mentorID, setMentorID] = useState("");
+  const [messages, setMessage] = useState("");
+  const [url, setUrl] = useState("");
+  const [mentors, setMentors] = useState([]);
   const handleMenteeChoose = (value) => {
-    console.log(value);
+    setMentorID(value);
   };
   //   isMentor={props?.location?.pathname === "mentormeetings"}
 
@@ -71,10 +113,14 @@ const Meetings = (props) => {
       </div>
     );
   });
+
+  let mentorDrop = mentors.map((mentor) => {
+    return <Option value={mentor.mentor._id}>{mentor.mentor.name}</Option>;
+  });
   return (
     <>
       <Layout>
-        <SideMenu />
+        <SideMenu isMentor={props?.location?.pathname === "/mentormeetings"} />
         <Layout style={{ backgroundColor: "white" }}>
           <Content
             style={{
@@ -91,10 +137,20 @@ const Meetings = (props) => {
               onOk={() => toggleCreateMeetingModal(false)}
               onCancel={() => toggleCreateMeetingModal(false)}
             >
-              <Input type="text" placeholder="Meeting URL" />
+              <Input
+                type="text"
+                placeholder="Meeting URL"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+              />
               <br />
               <br />
-              <Input type="text" placeholder="What's this meeting about ?" />
+              <Input
+                type="text"
+                placeholder="What's this meeting about ?"
+                value={messages}
+                onChange={(e) => setMessage(e.target.value)}
+              />
               <br />
               <br />
               <Select
@@ -102,13 +158,11 @@ const Meetings = (props) => {
                 style={{ width: "100%" }}
                 onChange={handleMenteeChoose}
               >
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="Yiminghe">yiminghe</Option>
+                {mentorDrop}
               </Select>
               <br />
               <br />
-              <Button>Create</Button>
+              <Button onClick={createmeeting}>Create</Button>
             </Modal>
             <Row>
               <Col span={12}>
