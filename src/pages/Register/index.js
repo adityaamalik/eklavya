@@ -100,7 +100,8 @@ const Register = (props) => {
                         width: "32%",
                         margin: "5px",
                         textAlign: "center",
-                        color: categoryID === category._id ? "blue" : "black",
+                        color:
+                            categoryID === category._id ? "#1890FF" : "black",
                         cursor: "pointer",
                     }}
                     cover={

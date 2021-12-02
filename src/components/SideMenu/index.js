@@ -29,7 +29,7 @@ const SideMenu = (props) => {
                     <h1 style={{ color: "white", fontSize: "25px" }}>Home</h1>
                 </S.SideMenu>
             </Link>
-            <Link to={props.isMentor ? "queries" : "queries"}>
+            <Link to={props.isMentor ? "mentorqueries" : "menteequeries"}>
                 <S.SideMenu>
                     <SearchOutlined
                         style={{ color: "white", fontSize: "40px" }}

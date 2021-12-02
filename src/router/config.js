@@ -25,9 +25,14 @@ const routes = [
         component: "MenteeDashboard",
     },
     {
-        path: ["/queries"],
+        path: ["/mentorqueries"],
         exact: true,
-        component: "Queries",
+        component: "MentorQueries",
+    },
+    {
+        path: ["/menteequeries"],
+        exact: true,
+        component: "MenteeQueries",
     },
     {
         path: ["/menteeinvitations"],
