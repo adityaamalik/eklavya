@@ -18,7 +18,7 @@ const { Content } = Layout;
 const { Meta } = Card;
 const { Option } = Select;
 
-const Profile = (props) => {
+const MenteeProfile = (props) => {
     const [createBadgeModal, toggleCreateBadgeModal] = useState(false);
 
     const handleMenteeChoose = (value) => {
@@ -186,11 +186,11 @@ const Profile = (props) => {
                             </Col>
                             <Col span={12}>
                                 <a
-                                    href={mentor.profileurl}
+                                    href={mentor.MenteeProfileurl}
                                     target="_blank"
                                     rel="noreferrer"
                                 >
-                                    View LinkedIn Profile
+                                    View LinkedIn MenteeProfile
                                 </a>
                             </Col>
                         </Row>
@@ -204,7 +204,9 @@ const Profile = (props) => {
         <>
             <Layout>
                 <SideMenu
-                    isMentor={props?.location?.pathname === "/mentorprofile"}
+                    isMentor={
+                        props?.location?.pathname === "/mentorMenteeProfile"
+                    }
                 />
                 <Layout style={{ backgroundColor: "white" }}>
                     <Content
@@ -254,7 +256,7 @@ const Profile = (props) => {
                             <br />
                             <Button>Create Badge</Button>
                         </Modal>
-                        <S.Heading>Profile</S.Heading>
+                        <S.Heading>MenteeProfile</S.Heading>
                         <br />
                         <br />
                         <Row align="middle">
@@ -277,7 +279,7 @@ const Profile = (props) => {
                         <br />
                         <Row align="middle">
                             <Col span={12} style={{ textAlign: "center" }}>
-                                <h3>LinkedIn Profile URL :</h3>
+                                <h3>LinkedIn MenteeProfile URL :</h3>
                             </Col>
                             <Col span={12}>
                                 <Input type="text" placeholder="URL" />
@@ -293,7 +295,8 @@ const Profile = (props) => {
                             </Col>
                         </Row>
                         <br />
-                        {props?.location?.pathname === "/menteeprofile" && (
+                        {props?.location?.pathname ===
+                            "/menteeMenteeProfile" && (
                             <>
                                 <Row>
                                     <Col span={24}>
@@ -311,7 +314,7 @@ const Profile = (props) => {
                                 <h2>
                                     My{" "}
                                     {props?.location?.pathname ===
-                                    "/menteeprofile"
+                                    "/menteeMenteeProfile"
                                         ? "Mentors"
                                         : "Mentees"}
                                 </h2>
@@ -340,4 +343,4 @@ const Profile = (props) => {
     );
 };
 
-export default Profile;
+export default MenteeProfile;

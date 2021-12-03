@@ -57,12 +57,12 @@ const routes = [
     {
         path: ["/mentorprofile"],
         exact: true,
-        component: "Profile",
+        component: "MentorProfile",
     },
     {
         path: ["/menteeprofile"],
         exact: true,
-        component: "Profile",
+        component: "MenteeProfile",
     },
 ];
 
