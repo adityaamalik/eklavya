@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import { Layout, Card, Row, Col, Button, Modal } from "antd";
+import { Layout, Card, Row, Col, Button, Modal, message } from "antd";
 import * as S from "./styles";
 import SideMenu from "../../components/SideMenu";
 import moment from "moment";
@@ -11,9 +11,28 @@ const { Content } = Layout;
 const Invitations = (props) => {
   const [role, setRole] = useState("");
 
+  const acceptInvite = (invite) => {
+    const mentor = localStorage.getItem("mentor");
+
+    axios
+      .put(`mentor/invite/accept/${mentor}`, {
+        invite: invite,
+      })
+      .then((response) => {
+        message.success("Accepted");
+      })
+      .catch((err) => {
+        if (!!err.response && err.response.status === 401) {
+          setTimeout(() => {
+            window.location.pathname = "/";
+          }, 1000);
+        }
+      });
+  };
+
   useEffect(() => {
     const mentee = localStorage.getItem("mentee");
-    if (mentee !== null && mentee !== undefined) {
+    if (props?.location?.pathname === "/menteeinvitations") {
       setRole("Mentee");
       axios
         .get(`/mentee/invite/${mentee}`)
@@ -44,16 +63,24 @@ const Invitations = (props) => {
         });
     }
   }, []);
+
   const [invites, setInvites] = useState([]);
   const [selected, setSelected] = useState({});
   const [selectedModal, toggleSelectedModal] = useState(false);
 
-  const acceptInvite = () => {
-    console.log("Accept");
-  };
+  const rejectInvite = (invite) => {
+    const mentor = localStorage.getItem("mentor");
 
-  const rejectInvite = () => {
-    console.log("Reject");
+    axios
+      .delete(`/mentor/invite/${invite}`)
+      .then((response) => {
+        message.success("Invite Removed");
+      })
+      .catch((err) => {
+        if (!!err.response && err.response.status === 401) {
+          message.error("Some error occured");
+        }
+      });
   };
 
   return (
@@ -198,7 +225,9 @@ const Invitations = (props) => {
                           }}
                           span={12}
                         >
-                          <Button onClick={acceptInvite}>Accept</Button>
+                          <Button onClick={() => acceptInvite(invite._id)}>
+                            Accept
+                          </Button>
                         </Col>
                         <Col
                           style={{
@@ -206,7 +235,10 @@ const Invitations = (props) => {
                           }}
                           span={12}
                         >
-                          <Button onClick={rejectInvite} danger>
+                          <Button
+                            onClick={() => rejectInvite(invite._id)}
+                            danger
+                          >
                             Reject
                           </Button>
                         </Col>
