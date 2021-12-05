@@ -8,10 +8,13 @@ import {
   Button,
   Modal,
   Input,
+  DatePicker,
   Select,
   message,
+  Radio,
 } from "antd";
 import * as S from "./styles";
+import moment from "moment";
 import SideMenu from "../../components/SideMenu";
 
 const { Content } = Layout;
@@ -19,7 +22,10 @@ const { Option } = Select;
 
 const MentorMeetings = (props) => {
   const [createMeetingModal, toggleCreateMeetingModal] = useState(false);
-
+  const onOk = (value) => {
+    console.log("onOk : ", value._d);
+    setDate(value._d);
+  };
   useEffect(() => {
     const mentor = localStorage.getItem("mentor");
     axios
@@ -56,6 +62,7 @@ const MentorMeetings = (props) => {
         message: messages,
         mentee: menteeID,
         url: url,
+        date: date,
       })
       .then((res) => {
         message.success("Meeting posted");
@@ -68,6 +75,7 @@ const MentorMeetings = (props) => {
   const [menteeID, setMenteeID] = useState("");
   const [messages, setMessage] = useState("");
   const [url, setUrl] = useState("");
+  const [date, setDate] = useState("");
   const [mentees, setMentees] = useState([]);
   const handleMenteeChoose = (value) => {
     setMenteeID(value);
@@ -85,10 +93,12 @@ const MentorMeetings = (props) => {
           </Row>
           <Row>
             <Col span={12}>
-              <strong>Date</strong> :{meeting.date}
+              <strong>Date</strong> :{" "}
+              {moment(meeting.date).format("Do MMMM YYYY ")}
             </Col>
             <Col span={12}>
-              <strong>Time</strong> : 12:00 PM
+              <strong>Time</strong> :{" "}
+              {moment(meeting.date).format(" HH:mm:ss ")}
             </Col>
           </Row>
           <Row>
@@ -113,14 +123,19 @@ const MentorMeetings = (props) => {
     );
   });
 
-  let menteeDrop = mentees.map((mentee) => {
-    return <Option value={mentee._id}>{mentee.name}</Option>;
+  let categoryDropdown = mentees.map((mentee, index) => {
+    return (
+      <Radio.Button key={index} value={mentee._id}>
+        {mentee.name}
+      </Radio.Button>
+    );
   });
+
   return (
     <>
       <Layout>
         <SideMenu isMentor={props?.location?.pathname === "/mentormeetings"} />
-        <Layout style={{ backgroundColor: "white" }}>
+        <Layout>
           <Content
             style={{
               height: "100vh",
@@ -152,13 +167,13 @@ const MentorMeetings = (props) => {
               />
               <br />
               <br />
-              <Select
-                placeholder="Select a mentee"
-                style={{ width: "100%" }}
-                onChange={handleMenteeChoose}
-              >
-                {menteeDrop}
-              </Select>
+              <h3>Choose A Mentee</h3>
+              <Radio.Group onChange={(e) => handleMenteeChoose(e.target.value)}>
+                {categoryDropdown}
+              </Radio.Group>
+              <br />
+              <br />
+              <DatePicker showTime onOk={onOk} />
               <br />
               <br />
               <Button onClick={createmeeting}>Create</Button>

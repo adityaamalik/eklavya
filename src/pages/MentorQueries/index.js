@@ -96,6 +96,7 @@ const MenteeQueries = (props) => {
       })
       .then((res) => {
         message.success("Answer posted successfully !");
+        window.location.pathname = "/mentorqueries";
         console.log(res.data);
       })
       .catch((err) => {

@@ -119,6 +119,12 @@ const Invitations = (props) => {
               </Row>
               <Row>
                 <Col span={12}>
+                  <h4>Profile Heading : </h4>
+                </Col>
+                <Col span={12}>{selected.profileHeading}</Col>
+              </Row>
+              <Row>
+                <Col span={12}>
                   <h4>Qualifications : </h4>
                 </Col>
                 <Col span={12}>{selected.qualifications}</Col>

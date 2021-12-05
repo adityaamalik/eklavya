@@ -10,6 +10,7 @@ import {
   Avatar,
   Modal,
   Select,
+  Radio,
   message,
 } from "antd";
 import * as S from "./styles";
@@ -21,8 +22,24 @@ const { Meta } = Card;
 const { Option } = Select;
 
 const Profile = (props) => {
-  const [createBadgeModal, toggleCreateBadgeModal] = useState(false);
-
+  const createReview = () => {
+    console.log(selectedMentee);
+    const reviewobj = {};
+    reviewobj.message = review;
+    reviewobj.mentor = mentor._id;
+    axios
+      .put(`mentee/reviews/${selectedMentee._id}`, {
+        review: reviewobj,
+      })
+      .then((response) => {
+        console.log(response.data);
+        message.success("Review posted");
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Some error occured");
+      });
+  };
   const createBadge = () => {
     const mentor = localStorage.getItem("mentor");
     const data = new FormData();
@@ -53,20 +70,20 @@ const Profile = (props) => {
       })
       .catch((err) => {
         console.log(err);
-        message.error("Some error occured");
+        message.error("Not Enough Coins");
       });
   };
 
-  const achivementsChanges = () => {
+  const skillsChanges = () => {
     const mentor = localStorage.getItem("mentor");
     console.log(mentor);
     axios
-      .put(`mentor/achievements/${mentor}`, {
-        achievements: achievements,
+      .put(`mentor/skills/${mentor}`, {
+        skills: skills,
       })
       .then((response) => {
         console.log(response.data);
-        message.success("Achivements posted");
+        message.success("skills posted");
       })
       .catch((err) => {
         console.log(err);
@@ -90,6 +107,40 @@ const Profile = (props) => {
         message.error("Some error occured");
       });
   };
+
+  const profileChangesurl = () => {
+    const mentor = localStorage.getItem("mentor");
+
+    axios
+      .put(`mentor/${mentor}`, {
+        profileurl: profileurl,
+      })
+      .then((response) => {
+        console.log(response.data);
+        message.success("Url posted");
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Some error occured");
+      });
+  };
+
+  const profileChangesquali = () => {
+    const mentor = localStorage.getItem("mentor");
+
+    axios
+      .put(`mentor/${mentor}`, {
+        qualifications: qualifications,
+      })
+      .then((response) => {
+        console.log(response.data);
+        message.success("qualification posted");
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Some error occured");
+      });
+  };
   const handleMenteeChoose = (value) => {
     console.log(value);
     setMenteeid(value);
@@ -104,11 +155,11 @@ const Profile = (props) => {
         console.log(response.data);
         setMentor(response.data);
         console.log(mentor);
-
+        setSkills(response.data.skills);
         setMentees(response.data.mentees);
-        setAchivementList(response.data.achievements);
-        console.log(response.data.achievements);
-        console.log(AchievementList);
+        setProfileHeading(response.data.profileHeading);
+        setQualifications(response.data.qualifications);
+        setUrl(response.data.profileurl);
       })
       .catch((err) => {
         if (!!err.response && err.response.status === 401) {
@@ -118,11 +169,28 @@ const Profile = (props) => {
         }
       });
   }, []);
+
+  const viewmentor = (mentee) => {
+    setSelectedMentee(mentee);
+
+    axios
+      .get(`mentee/review/${mentee._id}`)
+      .then((response) => {
+        console.log(response.data.review);
+        setReviews(response.data.review);
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Some error occured");
+      });
+  };
+  const [createBadgeModal, toggleCreateBadgeModal] = useState(false);
   const [image, setImage] = useState({});
   const [nameBadge, setName] = useState("");
   const [value, setValue] = useState("");
-  const [AchievementList, setAchivementList] = useState([]);
-  const [achievements, setAchivements] = useState("");
+  const [profileurl, setUrl] = useState("");
+  const [qualifications, setQualifications] = useState("");
+  const [skills, setSkills] = useState("");
   const [profileHeading, setProfileHeading] = useState("");
   const [description, setDescription] = useState("");
   const [mentees, setMentees] = useState([]);
@@ -130,7 +198,8 @@ const Profile = (props) => {
   const [mentor, setMentor] = useState("");
   const [selectedMentee, setSelectedMentee] = useState({});
   const [menteeModal, toggleMentorModal] = useState(false);
-
+  const [reviews, setReviews] = useState([]);
+  const [review, setReview] = useState("");
   let menteeList = mentees.map((mentor, index) => {
     return (
       <React.Fragment key={index}>
@@ -145,7 +214,7 @@ const Profile = (props) => {
               <Col span={12}>
                 <Button
                   onClick={() => {
-                    setSelectedMentee(mentor);
+                    viewmentor(mentor);
                     toggleMentorModal(true);
                   }}
                   size="small"
@@ -173,16 +242,14 @@ const Profile = (props) => {
   let MenteeDrop = mentees.map((mentee) => {
     return <Option value={mentee._id}>{mentee.name}</Option>;
   });
-
-  let AchivementsList = AchievementList.map((Achivement) => {
+  let categoryDropdown = mentees.map((mentee, index) => {
     return (
-      <Row align="end">
-        <Col span={16}>
-          <h3>{Achivement}</h3>
-        </Col>
-      </Row>
+      <Radio.Button key={index} value={mentee._id}>
+        {mentee.name}
+      </Radio.Button>
     );
   });
+
   return (
     <>
       <Layout>
@@ -227,13 +294,11 @@ const Profile = (props) => {
               />
               <br />
               <br />
-              <Select
-                placeholder="Select a mentor"
-                style={{ width: "100%" }}
-                onChange={handleMenteeChoose}
-              >
-                {MenteeDrop}
-              </Select>
+
+              <h3>Choose A Mentee</h3>
+              <Radio.Group onChange={(e) => handleMenteeChoose(e.target.value)}>
+                {categoryDropdown}
+              </Radio.Group>
               <br />
               <br />
               <Row>
@@ -271,19 +336,41 @@ const Profile = (props) => {
             <br />
             <Row align="middle">
               <Col span={8} style={{ textAlign: "center" }}>
-                <h3>Qualifications :</h3>
+                <h3>Qualifications</h3>
               </Col>
-              <Col span={16}>
-                <h3>{mentor.qualifications}</h3>
+              <Col span={14}>
+                <Input
+                  type="text"
+                  placeholder="Add Qualifications"
+                  value={qualifications}
+                  onChange={(e) => setQualifications(e.target.value)}
+                />
+              </Col>
+              <Col span={2}>
+                <CheckCircleOutlined
+                  style={{ fontSize: 24 }}
+                  onClick={profileChangesquali}
+                />
               </Col>
             </Row>
             <br />
             <Row align="middle">
               <Col span={8} style={{ textAlign: "center" }}>
-                <h3>LinkedIn Profile URL :</h3>
+                <h3>LinkedIn Url</h3>
               </Col>
-              <Col span={16}>
-                <h3>{mentor.profileurl}</h3>
+              <Col span={14}>
+                <Input
+                  type="text"
+                  placeholder="Add Url"
+                  value={profileurl}
+                  onChange={(e) => setUrl(e.target.value)}
+                />
+              </Col>
+              <Col span={2}>
+                <CheckCircleOutlined
+                  style={{ fontSize: 24 }}
+                  onClick={profileChangesurl}
+                />
               </Col>
             </Row>
             <br />
@@ -298,26 +385,25 @@ const Profile = (props) => {
             <br />
             <Row align="middle">
               <Col span={8} style={{ textAlign: "center" }}>
-                <h3>Achivements</h3>
+                <h3>Skills</h3>
               </Col>
-            </Row>
-            {AchivementsList}
-            <Row align="end">
               <Col span={14}>
                 <Input
                   type="text"
-                  placeholder="Add achivements"
-                  value={achievements}
-                  onChange={(e) => setAchivements(e.target.value)}
+                  placeholder="Add Skills"
+                  value={skills}
+                  onChange={(e) => setSkills(e.target.value)}
                 />
               </Col>
               <Col span={2}>
                 <CheckCircleOutlined
                   style={{ fontSize: 24 }}
-                  onClick={achivementsChanges}
+                  onClick={skillsChanges}
                 />
               </Col>
             </Row>
+            {/* {AchivementsList} */}
+
             <br />
             <Row align="middle">
               <Col span={8} style={{ textAlign: "center" }}>
@@ -340,7 +426,7 @@ const Profile = (props) => {
             </Row>
 
             <Modal
-              title="Mentor Details"
+              title="Mentee Details"
               centered
               visible={menteeModal}
               footer={null}
@@ -379,6 +465,58 @@ const Profile = (props) => {
                       </a>
                     </Col>
                   </Row>
+                  <Row>
+                    <Col span={24}>
+                      <h4>Reviews</h4>
+                    </Col>
+                  </Row>
+                  {reviews.map((review) => {
+                    return (
+                      <Row style={{ marginTop: "10px" }} key={review._id}>
+                        <Col span={24}>
+                          <Card
+                            style={{
+                              textAlign: "left",
+                            }}
+                          >
+                            <p>{review.message}</p>
+                            <Row>
+                              <Col span={12}>
+                                <p
+                                  style={{
+                                    color: "gray",
+                                  }}
+                                >
+                                  Reviewed By: {review.mentor.name}
+                                </p>
+                              </Col>
+                              <Col span={12}>
+                                <p
+                                  style={{
+                                    color: "gray",
+                                  }}
+                                >
+                                  {review.mentor.email}
+                                </p>
+                              </Col>
+                            </Row>
+                          </Card>
+                        </Col>
+                      </Row>
+                    );
+                  })}
+                  <Row>
+                    <Col span={24}>
+                      <Input
+                        type="text"
+                        placeholder="Write Review of Mentee"
+                        value={review}
+                        onChange={(e) => setReview(e.target.value)}
+                      />
+                    </Col>
+                  </Row>
+                  <br />
+                  <Button onClick={createReview}>Submit</Button>
                 </div>
               )}
 

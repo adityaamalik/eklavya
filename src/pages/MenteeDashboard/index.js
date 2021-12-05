@@ -59,6 +59,24 @@ const MenteeDashboard = () => {
         }
       });
   }, []);
+
+  const viewmentor = (mentor) => {
+    setSelectedMentor(mentor);
+
+    axios
+      .get(`mentor/review/${mentor._id}`)
+      .then((response) => {
+        console.log(response.data.review);
+        setReviews(response.data.review);
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Some error occured");
+      });
+  };
+
+  const [reviews, setReviews] = useState([]);
+  const [review, setReview] = useState("");
   const [categories, setCategories] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [categoryID, setCategoryID] = useState("asd");
@@ -105,7 +123,7 @@ const MenteeDashboard = () => {
               <Col span={12}>
                 <Button
                   onClick={() => {
-                    setSelectedMentor(mentor);
+                    viewmentor(mentor);
                     toggleMentorModal(true);
                   }}
                   size="small"
@@ -181,6 +199,12 @@ const MenteeDashboard = () => {
               </Row>
               <Row>
                 <Col span={12}>
+                  <h4>Profile Heading : </h4>
+                </Col>
+                <Col span={12}>{selectedMentor.profileHeading}</Col>
+              </Row>
+              <Row>
+                <Col span={12}>
                   <h4>Qualifications : </h4>
                 </Col>
                 <Col span={12}>{selectedMentor.qualifications}</Col>
@@ -203,6 +227,50 @@ const MenteeDashboard = () => {
                 </Col>
               </Row>
               <br />
+              <Row>
+                <Col span={24}>
+                  <h4>Reviews</h4>
+                </Col>
+              </Row>
+
+              {reviews.map((review) => {
+                return (
+                  <Row style={{ marginTop: "10px" }} key={review._id}>
+                    <Col span={24}>
+                      <Card
+                        style={{
+                          textAlign: "left",
+                        }}
+                      >
+                        <p>{review.message}</p>
+                        <Row>
+                          <Col span={12}>
+                            <p
+                              style={{
+                                color: "gray",
+                              }}
+                            >
+                              Reviewd By: {review.mentee.name}
+                            </p>
+                          </Col>
+                          <Col span={12}>
+                            <p
+                              style={{
+                                color: "gray",
+                              }}
+                            >
+                              {review.mentee.email}
+                            </p>
+                          </Col>
+                        </Row>
+                      </Card>
+                    </Col>
+                  </Row>
+                );
+              })}
+              <br />
+              <br />
+
               <Input
                 type="text"
                 placeholder="Invite Message"

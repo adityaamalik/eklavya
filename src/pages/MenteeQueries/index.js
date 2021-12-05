@@ -45,6 +45,9 @@ const MenteeQueries = (props) => {
   };
 
   const sendQuestion = () => {
+    if (categoryID === "") {
+      message.error("Please select Category");
+    }
     axios
       .post(`/mentee/question/${localStorage.getItem("mentee")}`, {
         askedby: localStorage.getItem("mentee"),
@@ -57,9 +60,10 @@ const MenteeQueries = (props) => {
         setCategoryID("");
         setQuestion("");
         message.success("Question posted");
+        window.location.pathname = "/menteequeries";
       })
       .catch((err) => {
-        message.error("Could not post Question");
+        message.error("Not enough Coins");
       });
   };
 
@@ -95,6 +99,7 @@ const MenteeQueries = (props) => {
       });
   }, []);
   const [categories, setCategories] = useState([]);
+  const [states, setstates] = useState("");
   const [questions, setQuestions] = useState([]);
   const [categoryID, setCategoryID] = useState("");
   const [question, setQuestion] = useState("");
@@ -129,12 +134,15 @@ const MenteeQueries = (props) => {
       })
       .then((res) => {
         message.success("Answer posted successfully !");
-        console.log(res.data);
+        console.log("Ad");
+
+        window.location.pathname = "/menteequeries";
       })
       .catch((err) => {
         message.error("Cannot post answer !");
         console.log(err.data);
       });
+    // handleCategoryFilter(categoryID);
   };
   const markans = (a, q) => {
     console.log(answer);
@@ -263,11 +271,15 @@ const MenteeQueries = (props) => {
                   <div key={answer._id}>{answer.answer}</div>
 
                   <div>
-                    {selectedQuestion.askedby === mentee && (
-                      <Button onClick={() => markans(answer, selectedQuestion)}>
-                        Verify Ans
-                      </Button>
-                    )}
+                    {selectedQuestion.askedby === mentee &&
+                      answer.answeredby !== mentee &&
+                      selectedQuestion.reseloved === false && (
+                        <Button
+                          onClick={() => markans(answer, selectedQuestion)}
+                        >
+                          Verify Ans
+                        </Button>
+                      )}
                   </div>
                 </div>
               ))}
