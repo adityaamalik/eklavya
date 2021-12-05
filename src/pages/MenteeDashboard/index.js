@@ -58,6 +58,23 @@ const MenteeDashboard = () => {
           }, 1000);
         }
       });
+
+    if (mentors.length === 0) {
+      axios
+        .get(`/mentor`)
+        .then((response) => {
+          console.log(response.data);
+
+          setMentors(response.data);
+        })
+        .catch((err) => {
+          if (!!err.response && err.response.status === 401) {
+            setTimeout(() => {
+              message.error("some error occured");
+            }, 1000);
+          }
+        });
+    }
   }, []);
 
   const viewmentor = (mentor) => {
