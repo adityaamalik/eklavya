@@ -6,16 +6,16 @@ import reportWebVitals from "./reportWebVitals";
 import axios from "axios";
 
 axios.defaults.headers.common[`Authorization`] = `Bearer ${localStorage.getItem(
-  "token"
+    "token"
 )}`;
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://eklavyabackend.herokuapp.com/";
 
 const App = () => (
-  <BrowserRouter>
-    <Router />
-  </BrowserRouter>
+    <BrowserRouter>
+        <Router />
+    </BrowserRouter>
 );
 
 ReactDOM.render(<App />, document.getElementById("root"));
