@@ -310,7 +310,9 @@ const MenteeDashboard = () => {
             <Divider />
             <Row>
               <Col span={24}>
-                <h1>Here are your perfect mentors ! </h1>
+                <h1>
+                  Here are your perfect mentors !. Please select Category{" "}
+                </h1>
               </Col>
             </Row>
             <p style={{ color: "gray" }}>

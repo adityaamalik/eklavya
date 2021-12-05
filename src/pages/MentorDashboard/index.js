@@ -17,7 +17,9 @@ const MentorDashboard = () => {
       .then((response) => {
         console.log(response.data);
 
-        setTitle("Welcome Back Here Are Your Mentees");
+        setTitle(
+          "Welcome !!! and Please Check Inviations if you don't have any Mentee"
+        );
         setMentees(response.data.mentees);
       })
       .catch((err) => {
