@@ -59,22 +59,22 @@ const MenteeDashboard = () => {
         }
       });
 
-    if (mentors.length === 0) {
-      axios
-        .get(`/mentor`)
-        .then((response) => {
-          console.log(response.data);
+    // if (mentors.length === 0) {
+    //   axios
+    //     .get(`/mentor`)
+    //     .then((response) => {
+    //       console.log(response.data);
 
-          setMentors(response.data);
-        })
-        .catch((err) => {
-          if (!!err.response && err.response.status === 401) {
-            setTimeout(() => {
-              message.error("some error occured");
-            }, 1000);
-          }
-        });
-    }
+    //       setMentors(response.data);
+    //     })
+    //     .catch((err) => {
+    //       if (!!err.response && err.response.status === 401) {
+    //         setTimeout(() => {
+    //           message.error("some error occured");
+    //         }, 1000);
+    //       }
+    //     });
+    // }
   }, []);
 
   const viewmentor = (mentor) => {
@@ -93,7 +93,6 @@ const MenteeDashboard = () => {
   };
 
   const [reviews, setReviews] = useState([]);
-
   const [categories, setCategories] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [categoryID, setCategoryID] = useState("asd");

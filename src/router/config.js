@@ -42,7 +42,7 @@ const routes = [
   {
     path: ["/mentorinvitations"],
     exact: true,
-    component: "Invitations",
+    component: "MentorInvitations",
   },
   {
     path: ["/menteemeetings"],

@@ -8,6 +8,7 @@ const { Meta } = Card;
 const { Content } = Layout;
 
 const MentorDashboard = () => {
+  const [mentees, setMentees] = useState([]);
   useEffect(() => {
     const mentor = localStorage.getItem("mentor");
 
@@ -26,32 +27,50 @@ const MentorDashboard = () => {
           }, 1000);
         }
       });
-    if (mentees.length === 0) {
-      axios
-        .get(`/mentee`)
-        .then((response) => {
-          console.log(response.data);
-          setTitle(
-            "You have no mentess, please check invitations. Here are some popular mentess"
-          );
-          setMentees(response.data);
-        })
-        .catch((err) => {
-          if (!!err.response && err.response.status === 401) {
-            setTimeout(() => {
-              message.error("some error occured");
-            }, 1000);
-          }
-        });
-    }
+    // if (mentees.length === 0) {
+    //   axios
+    //     .get(`/mentee`)
+    //     .then((response) => {
+    //       console.log(response.data);
+    //       setTitle(
+    //         "You have no mentess, please check invitations. Here are some popular mentess"
+    //       );
+    //       setMentees(response.data);
+    //     })
+    //     .catch((err) => {
+    //       if (!!err.response && err.response.status === 401) {
+    //         setTimeout(() => {
+    //           message.error("some error occured");
+    //         }, 1000);
+    //       }
+    //     });
+    // }
   }, []);
 
-  const [mentees, setMentees] = useState([]);
   const [reviews, setReviews] = useState([]);
 
   const [title, setTitle] = useState("");
   const [selectedMentee, setSelectedMentee] = useState({});
   const [menteeModal, toggleMentorModal] = useState(false);
+
+  // if (mentees.length === 0) {
+  //   axios
+  //     .get(`/mentee`)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setTitle(
+  //         "You have no mentess, please check invitations. Here are some popular mentess"
+  //       );
+  //       setMentees(response.data);
+  //     })
+  //     .catch((err) => {
+  //       if (!!err.response && err.response.status === 401) {
+  //         setTimeout(() => {
+  //           message.error("some error occured");
+  //         }, 1000);
+  //       }
+  //     });
+  // }
 
   const viewmentor = (mentee) => {
     setSelectedMentee(mentee);

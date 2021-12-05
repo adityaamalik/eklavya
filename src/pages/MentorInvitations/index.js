@@ -31,11 +31,10 @@ const Invitations = (props) => {
   };
 
   useEffect(() => {
-    const mentee = localStorage.getItem("mentee");
-
-    setRole("Mentee");
+    const mentor = localStorage.getItem("mentor");
+    setRole("Mentor");
     axios
-      .get(`/mentee/invite/${mentee}`)
+      .get(`/mentor/invite/${mentor}`)
       .then((response) => {
         setInvites(response.data);
       })
