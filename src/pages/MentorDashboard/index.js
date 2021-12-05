@@ -171,9 +171,21 @@ const MentorDashboard = () => {
                   </Row>
                   <Row>
                     <Col span={12}>
+                      <h4>Profile Heading : </h4>
+                    </Col>
+                    <Col span={12}>{selectedMentee.profileHeading}</Col>
+                  </Row>
+                  <Row>
+                    <Col span={12}>
                       <h4>Qualifications : </h4>
                     </Col>
                     <Col span={12}>{selectedMentee.qualifications}</Col>
+                  </Row>
+                  <Row>
+                    <Col span={12}>
+                      <h4>Skills : </h4>
+                    </Col>
+                    <Col span={12}>{selectedMentee.skills}</Col>
                   </Row>
 
                   <Row>

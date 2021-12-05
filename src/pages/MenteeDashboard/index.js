@@ -175,9 +175,7 @@ const MenteeDashboard = () => {
         toggleMentorModal(false);
         selectedMentor({});
       })
-      .catch((err) => {
-        message.error("Could not send invite !");
-      });
+      .catch((err) => {});
   };
 
   return (
@@ -224,6 +222,12 @@ const MenteeDashboard = () => {
                   <h4>Qualifications : </h4>
                 </Col>
                 <Col span={12}>{selectedMentor.qualifications}</Col>
+              </Row>
+              <Row>
+                <Col span={12}>
+                  <h4>Skills : </h4>
+                </Col>
+                <Col span={12}>{selectedMentor.skills}</Col>
               </Row>
               <Row>
                 <Col span={12}>

@@ -450,6 +450,13 @@ const Profile = (props) => {
                   </Row>
 
                   <Row>
+                    <Col span={12}>
+                      <h4>Skills : </h4>
+                    </Col>
+                    <Col span={12}>{selectedMentee.skills}</Col>
+                  </Row>
+
+                  <Row>
                     <Col span={24}>
                       <a
                         href={selectedMentee.profileurl}

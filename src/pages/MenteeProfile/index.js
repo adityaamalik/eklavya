@@ -395,6 +395,12 @@ const MenteeProfile = (props) => {
                     </Col>
                     <Col span={12}>{selectedMentor.mentor.qualifications}</Col>
                   </Row>
+                  <Row>
+                    <Col span={12}>
+                      <h4>Skills : </h4>
+                    </Col>
+                    <Col span={12}>{selectedMentor.mentor.skills}</Col>
+                  </Row>
 
                   <Row>
                     <Col span={24}>
