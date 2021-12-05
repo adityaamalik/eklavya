@@ -8,7 +8,6 @@ import {
   Button,
   Modal,
   Input,
-  Select,
   message,
   DatePicker,
   Radio,
@@ -18,7 +17,6 @@ import * as S from "./styles";
 import SideMenu from "../../components/SideMenu";
 
 const { Content } = Layout;
-const { Option } = Select;
 
 const Meetings = (props) => {
   const [createMeetingModal, toggleCreateMeetingModal] = useState(false);
@@ -126,14 +124,6 @@ const Meetings = (props) => {
           </a>
         </Card>
       </div>
-    );
-  });
-
-  let mentorDrop = mentors.map((mentor, index) => {
-    return (
-      <Option key={index} value={mentor.mentor._id}>
-        {mentor.mentor.name}
-      </Option>
     );
   });
 

@@ -11,7 +11,6 @@ import {
   Modal,
   message,
   Input,
-  Select,
   Radio,
 } from "antd";
 import axios from "axios";
@@ -21,7 +20,6 @@ import moment from "moment";
 
 const { Meta } = Card;
 const { Content } = Layout;
-const { Option } = Select;
 
 const MenteeQueries = (props) => {
   const handleCategoryFilter = (value) => {
@@ -62,30 +60,11 @@ const MenteeQueries = (props) => {
   }, []);
   const [categories, setCategories] = useState([]);
   const [questions, setQuestions] = useState([]);
-  const [categoryID, setCategoryID] = useState("");
-  const [question, setQuestion] = useState("");
+
   const [questionModal, setQuestionModal] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [answer, setAnswer] = useState("");
   const [mentor, setMentor] = useState("");
-
-  const categoryList = categories.map((category) => {
-    return (
-      <div key={category._id} onClick={() => setCategoryID(category._id)}>
-        <Card.Grid
-          style={{
-            width: "32%",
-            margin: "5px",
-            textAlign: "center",
-            color: category._id === categoryID ? "#1890FF" : "black",
-            cursor: "pointer",
-          }}
-        >
-          {category.name}
-        </Card.Grid>
-      </div>
-    );
-  });
 
   const postAnswer = () => {
     console.log(answer);

@@ -9,7 +9,6 @@ import {
   Card,
   Avatar,
   Modal,
-  Select,
   Radio,
   message,
 } from "antd";
@@ -19,7 +18,6 @@ import { CheckCircleOutlined } from "@ant-design/icons";
 
 const { Content } = Layout;
 const { Meta } = Card;
-const { Option } = Select;
 
 const Profile = (props) => {
   const createReview = () => {
@@ -239,9 +237,6 @@ const Profile = (props) => {
     );
   });
 
-  let MenteeDrop = mentees.map((mentee) => {
-    return <Option value={mentee._id}>{mentee.name}</Option>;
-  });
   let categoryDropdown = mentees.map((mentee, index) => {
     return (
       <Radio.Button key={index} value={mentee._id}>

@@ -93,7 +93,7 @@ const MenteeDashboard = () => {
   };
 
   const [reviews, setReviews] = useState([]);
-  const [review, setReview] = useState("");
+
   const [categories, setCategories] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [categoryID, setCategoryID] = useState("asd");

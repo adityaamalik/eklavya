@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Layout,
-  Row,
-  Col,
-  Input,
-  Button,
-  Card,
-  Avatar,
-  Modal,
-  Select,
-  message,
-} from "antd";
+import { Layout, Row, Col, Button, Card, Avatar, Modal, message } from "antd";
 import * as S from "./styles";
 import SideMenu from "../../components/SideMenu";
 
@@ -19,24 +8,6 @@ const { Meta } = Card;
 const { Content } = Layout;
 
 const MentorDashboard = () => {
-  const createReview = () => {
-    console.log(selectedMentee);
-    const reviewobj = {};
-    reviewobj.message = review;
-    reviewobj.mentor = mentor._id;
-    axios
-      .put(`mentee/reviews/${selectedMentee._id}`, {
-        review: reviewobj,
-      })
-      .then((response) => {
-        console.log(response.data);
-        message.success("Review posted");
-      })
-      .catch((err) => {
-        console.log(err);
-        message.error("Some error occured");
-      });
-  };
   useEffect(() => {
     const mentor = localStorage.getItem("mentor");
 
@@ -44,7 +15,7 @@ const MentorDashboard = () => {
       .get(`/mentor/mentee/${mentor}`)
       .then((response) => {
         console.log(response.data);
-        setMentor(response.data);
+
         setTitle("Welcome Back Here Are Your Mentees");
         setMentees(response.data.mentees);
       })
@@ -77,9 +48,7 @@ const MentorDashboard = () => {
 
   const [mentees, setMentees] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [review, setReview] = useState("");
-  const [menteeid, setMenteeid] = useState([]);
-  const [mentor, setMentor] = useState("");
+
   const [title, setTitle] = useState("");
   const [selectedMentee, setSelectedMentee] = useState({});
   const [menteeModal, toggleMentorModal] = useState(false);

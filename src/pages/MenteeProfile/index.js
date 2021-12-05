@@ -9,7 +9,6 @@ import {
   Card,
   Avatar,
   Modal,
-  Select,
   message,
 } from "antd";
 import * as S from "./styles";
@@ -18,7 +17,6 @@ import { CheckCircleOutlined } from "@ant-design/icons";
 
 const { Content } = Layout;
 const { Meta } = Card;
-const { Option } = Select;
 
 const MenteeProfile = (props) => {
   const skillssChanges = () => {

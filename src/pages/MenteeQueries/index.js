@@ -11,7 +11,6 @@ import {
   Modal,
   message,
   Input,
-  Select,
   Radio,
 } from "antd";
 import axios from "axios";
@@ -21,7 +20,6 @@ import moment from "moment";
 
 const { Meta } = Card;
 const { Content } = Layout;
-const { Option } = Select;
 
 const MenteeQueries = (props) => {
   const handleCategoryFilter = (value) => {
@@ -99,7 +97,7 @@ const MenteeQueries = (props) => {
       });
   }, []);
   const [categories, setCategories] = useState([]);
-  const [states, setstates] = useState("");
+
   const [questions, setQuestions] = useState([]);
   const [categoryID, setCategoryID] = useState("");
   const [question, setQuestion] = useState("");
@@ -209,7 +207,7 @@ const MenteeQueries = (props) => {
                     </span>
                   )}
                 </div>,
-                ,
+
                 <div>{question.reseloved && <span>Already SOLVED</span>}</div>,
               ]}
             >

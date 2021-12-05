@@ -69,8 +69,6 @@ const Invitations = (props) => {
   const [selectedModal, toggleSelectedModal] = useState(false);
 
   const rejectInvite = (invite) => {
-    const mentor = localStorage.getItem("mentor");
-
     axios
       .delete(`/mentor/invite/${invite}`)
       .then((response) => {

@@ -9,7 +9,6 @@ import {
   Modal,
   Input,
   DatePicker,
-  Select,
   message,
   Radio,
 } from "antd";
@@ -18,7 +17,6 @@ import moment from "moment";
 import SideMenu from "../../components/SideMenu";
 
 const { Content } = Layout;
-const { Option } = Select;
 
 const MentorMeetings = (props) => {
   const [createMeetingModal, toggleCreateMeetingModal] = useState(false);
